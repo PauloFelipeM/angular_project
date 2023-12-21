@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+  angular:
+    # build:
+    #   context: ./
+    #   dockerfile: Dockerfile
+    image: paulofelipem/fruits-angular:latest
+    container_name: fruits-angular
+    working_dir: /var/www
+    tty: true
+    ports:
+      - 4000:4000
+    volumes:
+      - ./:/var/www:rw
+    command: ["node", "dist/fruits_angular/server/server.mjs"]

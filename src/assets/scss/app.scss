@@ -1,0 +1,28 @@
+body {
+  section {
+    padding: 50px;
+    .card-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #000000;
+      padding-bottom: 5px;
+      margin-bottom: 5px;
+      border-bottom: 1px solid #eee;
+    }
+    .card-content {
+      margin-top: 20px;
+
+
+    }
+    .card-actions {
+      justify-content: end;
+      padding: 0 16px;
+    }
+
+    .mdc-data-table__table .mat-column-actions {
+      max-width: 15px;
+      text-align: center;
+      vertical-align: middle;
+    }
+  }
+}
