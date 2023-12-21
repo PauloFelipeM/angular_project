@@ -1,0 +1,39 @@
+image: paulofelipem/fruits-angular:latest
+
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  script:
+   - echo "Execute Lint"
+   - npm install
+   - ng lint
+  only:
+    - develop
+
+deploy:
+  stage: deploy
+  before_script:
+    - eval $(ssh-agent -s)
+    - mkdir -p /root/.ssh
+    - chmod 0700 /root/.ssh
+    - echo "$SSH_PUBLIC_KEY_PROD" > /root/.ssh/id_rsa.pub
+    - echo "$SSH_PRIVATE_KEY_PROD" > /root/.ssh/id_rsa
+    - chmod 600 /root/.ssh/id_rsa
+    - chmod 600 /root/.ssh/id_rsa.pub
+    - ssh-add /root/.ssh/id_rsa
+  script:
+   - echo "Install Dependencies"
+   - npm install
+   - echo "Build Application"
+   - ng build
+   - echo "Clean old files"
+   - ssh -p 2222 -tt $USER_DEPLOY_PROD@$DEPLOY_SERVER_PROD 'cd /home/administrator/crowd-content && sudo rm -rf front'
+   - echo "Copy Build Files to server"
+   - scp -P 2222 -r dist/* $USER_DEPLOY_PROD@$DEPLOY_SERVER_PROD:/home/administrator/crowd-content/front
+   - echo "Change Permission"
+   - ssh -p 2222 -tt $USER_DEPLOY_PROD@$DEPLOY_SERVER_PROD 'cd crowd-content && sudo chown administrator.administrator ./ -R '
+  only:
+    - master
