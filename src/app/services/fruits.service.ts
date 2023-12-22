@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class FruitsService {
-  private apiUrl: string = 'http://localhost:9005/fruits';
+  private apiUrl: string = 'http://localhost:9005/api/v1/fruits';
 
   constructor(protected http: HttpClient) {}
 
